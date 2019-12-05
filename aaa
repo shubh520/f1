@@ -1,0 +1,231 @@
+
+
+****docker
+
+sudo su
+
+sudo apt-get update
+
+sudo apt-get install docker.io -y
+
+docker --version
+
+sudo docker pull ubuntu
+
+sudo docker run -it -d ubuntu
+
+sudo docker images
+
+docker ps
+
+sudo docker exec -it <Container-id> bash   /* 9dfd866wwrtsd4r */
+
+apt-get update
+
+apt-get install apache2 -y                 /* here apache2 can be replaced with any given software  */
+
+exit /*to come back to host*/
+
+docker ps -a
+
+docker commit <container_id> <new_image_name>    /* this makes new image having (ubuntu+apache2)  */
+
+docker images                    /*will have two images */
+
+docker run -it -d -p 81:80 <new_image_name>
+docker exec -it <cintainer_id> bash
+docker service apache2 start
+
+
+Goto browser
+<ip>:81
+
+
+
+
+*** to rename  existing image ****
+
+sudo docker tag <old image name > <new image name>
+sudo docker rmi <old image name> 
+***To add image in the docker hub ***
+
+docker login       /* this will make connection with docker hub   and will ask for dockerusername and password   */
+
+docker push <image_name>    /* must = dockerusername/imagename */
+
+
+
+*******creating image using dockerfile********
+
+mkdir dockerfile
+cd dockerfile
+nano dockerfile
+
+<inside it>
+				FROM ubuntu
+				RUN apt-get update
+				RUN apt-get install  apache2 -y
+				ADD . /var/appache
+				ENTRYPOINT apachectl -D FOREGROUND
+				ENV name 	ApacheUBUNTU
+<Save it>
+
+ls
+nano 1.html
+<inside it>
+           <html>
+           <head><title> html1 </title></head>
+           <body>
+           <h3> "hellow world.."</h3>
+           </body>
+           </html>
+<saveit>
+
+
+
+docker build  . -t <new image name>  /* this will automatically  (pull ubuntu+run it +update it + apache ) on it
+
+cd ..   /* back to root again
+
+ sudo docker images
+ sudo docker run -it -d -p 81:80 <Image_name>
+ 
+
+ ************ docker SWarm
+<<<Both>>>
+sudo su
+
+sudo apt-get update
+
+sudo apt-get install docker.io -y
+
+docker --version
+
+ in master
+
+docker pull ubuntu
+docker run -it -d ubuntu
+docker exec -it <container_id> bash
+apt-get update
+apt-install apache2
+exit
+docker commit <container_id> apache
+docker images
+                <* note will show 2 images ubuntu and apache  >
+
+
+  				docker swarm init --advertise-adder <masterip>
+
+ in worker
+ 				docker swarm join --token <token genrated in master>
+
+ in master			docker node ls      /* to check no of nodes
+
+ 			docker service create --<name> --replicas<no> -p 81:80 apache   /* to start a service
+
+
+
+ 			docker service ls
+
+ 			docker swarm leave  /* for worker
+ 			docker swarm -f leave  /* forceful for master
+
+**************** git 
+
+
+apt-get update
+apt-get install git-core -y
+git --version
+
+git config --global user.name "pranavghoderao"
+git config --global user.email "pranavghoderao@gmail.com"
+git config --global branch.autosetuprebase always
+config --global color.ui true
+config --global color.status auto
+config --global  color.branch auto
+
+git config -l
+
+
+mkdir <dirname>
+cd <dirname>
+nano file1.c 
+            <cprog save it>
+
+ 
+ git init
+ git status
+ git add .
+ git commit -m "<message>" 
+
+ on GitAccount<browser>
+ 			nnew repository
+ 							copy its link
+ on terminal
+           git remote add origin <url_of_repo>
+           git push origin master -f
+
+
+           ****branching
+
+           git branch <branch_name>
+           git branch
+           git checkout <branch_name>
+           mkdir <dir_name>
+           cd <dir_name>
+
+           git clone <url>
+           ls
+
+           nano <file>.c
+           git add .
+           git commit -m "<message>"
+           git push origin <branch_name>
+
+           git checkout master
+           git merge <branch_name>
+            git log    /* to get histoty       
+
+
+
+ *********** jenkins********************
+
+sudo apt install openjdk-8-jre
+wget -O -q - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+or
+wget --no-check-certificate -qO - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -
+echo deb http://pkg.jenkins.io/debian-stable binary/| sudo tee /etc/apt/sources.list.d/jenkins.list
+sudo apt-get update
+sudo apt install jenkins -y
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+
+<note.... Open new terminal ..dont press enter or any key in the current bash
+
+dhclient
+ifconfig    /* get ip address
+
+......>
+
+Go to browser
+  <ip_master>:8080>
+
+  copy the  <path>
+  inside the new terminal 
+  							cat <path>
+  							get the password
+unlock the jenkins...
+clk on install suggested pluginss
+
+get started with jenkins..
+
+click on new item 
+   					give name
+   								freestyleproject
+                                        click ok
+                    then 
+                         select git (source code management)
+
+
+
+
